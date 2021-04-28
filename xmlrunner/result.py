@@ -102,10 +102,12 @@ class _DuplicateWriter(io.TextIOBase):
         return self._second.getvalue()
 
     def writelines(self, lines):
-        self._first.writelines(lines)
-        self._second.writelines(lines)
+        new_lines = [ safe_unicode(l) for l in lines ]
+        self._first.writelines(new_lines)
+        self._second.writelines(new_lines)
 
     def write(self, b):
+        b = safe_unicode(b)
         if isinstance(self._first, io.TextIOBase):
             wrote = self._first.write(b)
 
